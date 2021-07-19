@@ -1,11 +1,11 @@
 {
   "Actions": [
     {
-      "Icon": "action/images/actionimage", 
+      "Icon": "action/images/stopped", 
       "Name": "Kimai Time tracking", 
       "States": [
         {
-          "Image": "action/images/action",
+          "Image": "action/images/stopped",
           "Name": "Unknown"
         }
       ], 
@@ -19,7 +19,7 @@
   "PropertyInspectorPath": "propertyinspector/index.html", 
   "Description": "Tracks time with Kimai v1", 
   "Name": "Kimai tracking plugin", 
-  "Icon": "action/images/action", 
+  "Icon": "action/images/stopped", 
   "URL": "https://www.vannoordengineering.nl", 
   "Version": "1.0.0",
   "OS": [
