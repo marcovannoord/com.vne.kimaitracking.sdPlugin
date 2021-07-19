@@ -2,7 +2,7 @@
   "Actions": [
     {
       "Icon": "action/images/actionimage", 
-      "Name": "Example Action", 
+      "Name": "Kimai Time tracking", 
       "States": [
         {
           "Image": "action/images/action"
@@ -16,10 +16,10 @@
   "Author": "Van Noord Engineering", 
   "CodePath": "index.html", 
   "PropertyInspectorPath": "propertyinspector/index.html", 
-  "Description": "Example description", 
+  "Description": "Tracks time with Kimai v1", 
   "Name": "Kimai tracking plugin", 
   "Icon": "action/images/action", 
-  "URL": "https://www.elgato.com/en/gaming/stream-deck", 
+  "URL": "https://www.vannoordengineering.nl", 
   "Version": "1.0.0",
   "OS": [
     {

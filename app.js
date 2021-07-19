@@ -16,14 +16,15 @@ $SD.on('connected', (jsonObj) => connected(jsonObj));
 
 function connected(jsn) {
     // Subscribe to the willAppear and other events
-    $SD.on('com.elgato.template.action.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
-    $SD.on('com.elgato.template.action.keyUp', (jsonObj) => action.onKeyUp(jsonObj));
-    $SD.on('com.elgato.template.action.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
-    $SD.on('com.elgato.template.action.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
-    $SD.on('com.elgato.template.action.propertyInspectorDidAppear', (jsonObj) => {
+    console.log(`[connected] ${JSON.stringify(jsn)}`);
+    $SD.on('com.vne.kimaitracking.action.willAppear', (jsonObj) => action.onWillAppear(jsonObj));
+    $SD.on('com.vne.kimaitracking.action.keyUp', (jsonObj) => action.onKeyUp(jsonObj));
+    $SD.on('com.vne.kimaitracking.action.sendToPlugin', (jsonObj) => action.onSendToPlugin(jsonObj));
+    $SD.on('com.vne.kimaitracking.action.didReceiveSettings', (jsonObj) => action.onDidReceiveSettings(jsonObj));
+    $SD.on('com.vne.kimaitracking.action.propertyInspectorDidAppear', (jsonObj) => {
         console.log('%c%s', 'color: white; background: black; font-size: 13px;', '[app.js]propertyInspectorDidAppear:');
     });
-    $SD.on('com.elgato.template.action.propertyInspectorDidDisappear', (jsonObj) => {
+    $SD.on('com.vne.kimaitracking.action.propertyInspectorDidDisappear', (jsonObj) => {
         console.log('%c%s', 'color: white; background: red; font-size: 13px;', '[app.js]propertyInspectorDidDisappear:');
     });
 };
@@ -77,9 +78,49 @@ const action = {
         this.setTitle(jsn);
     },
 
-    onKeyUp: function (jsn) {
-        this.doSomeThing(jsn, 'onKeyUp', 'green');
+    onKeyUp: (jsonObj) => {
+        console.log(`[onKeyUp] ${JSON.stringify(jsonObj)}`);
+        if (!jsonObj.payload.settings || !jsonObj.payload.settings.myurl || !jsonObj.payload.settings.myapikey) {
+            $SD.api.showAlert(jsonObj.context);
+            return;
+        }
+        fetch(jsonObj.payload.settings.myurl + "/core/json.php", {
+            "method": "POST",
+            "headers": {
+                "content-type": "application/json"
+            },
+            "body": JSON.stringify({
+                "method": "getActiveRecording",
+                "params": [
+                    jsonObj.payload.settings.myapikey
+                ],
+                "id": "1",
+                "jsonrpc": "2.0"
+              })
+        }).then(result => { 
+            // Got a successfull API call
+            if(result.status == 200){
+                $SD.api.showOk(jsonObj.context) 
+                result.json().then(bodydata => {
+                    if((bodydata.result.error && bodydata.result.error.msg == "No active recording."){
+                         console.log(`[response] no active recording`);
+                         // TODO: show play icon
+                    }else if(bodydata.result.error && bodydata.result.error.msg == "No active recording."){
+                        // TODO: show stop icon
+                    }
+                })
+
+            }else{
+                $SD.api.showAlert(jsonObj.context)
+            }
+
+        }, error => { 
+            $SD.api.showAlert(jsonObj.context)}
+            );
     },
+    // onKeyUp: function (jsn) {
+    //     this.doSomeThing(jsn, 'onKeyUp', 'green');
+    // },
 
     onSendToPlugin: function (jsn) {
         /**
