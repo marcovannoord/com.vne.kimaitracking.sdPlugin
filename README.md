@@ -37,3 +37,7 @@ You also need to supply an API-key to your kimai-user. This can be done using Po
 # Source code
 
 The current folder contains the sourcecode of this plugin
+
+# Building
+From the current directory, run:
+`DistributionTool.exe -b -i C:\Users\USERNAME\AppData\Roaming\Elgato\StreamDeck\Plugins\com.vne.kimaitracking.sdPlugin -o Release`
