@@ -5,7 +5,8 @@
       "Name": "Kimai Time tracking", 
       "States": [
         {
-          "Image": "action/images/action"
+          "Image": "action/images/action",
+          "Name": "Unknown"
         }
       ], 
       "Tooltip": "This is an example tooltip", 
